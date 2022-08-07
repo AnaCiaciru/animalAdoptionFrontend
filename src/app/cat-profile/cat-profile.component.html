@@ -1,0 +1,186 @@
+<div class="container" id="main-container">
+  <div class="main-body">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="main-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/home">Acasă</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Profil Pisică</li>
+      </ol>
+    </nav>
+    <!-- /Breadcrumb -->
+
+    <div class="row gutters-sm" *ngIf="cat">
+      <div class="col-md-4 mb-3">
+        <!-- First block -->
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-column align-items-center text-center">
+              <img src="{{cat?.imageUrl}}" alt="Admin" class="" width="150">
+              <div class="mt-3">
+                <h4>{{cat?.name}}</h4>
+                <!-- <p class="text-secondary mb-1">{{cat.characs}}</p>
+                <p class="text-muted font-size-sm">{{cat.ratings}}</p> -->
+                <button class="btn btn-primary">Contacteaza</button>
+                <button class="btn btn-outline-primary">Trimite mesaj</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <!-- Date personale -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Nume</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{cat?.name}}
+              </div>
+            </div>
+            <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Varsta</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  {{cat?.age}}
+                </div>
+              </div>
+              <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Gen</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{cat?.gender}}
+                  </div>
+                </div>
+                <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Email</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                ana@gmail.com
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Numar de telefon</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                (+4)0768911654
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Adresa</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                Bucuresti
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Descriere</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                Buna, sunt {{cat.name}}, un pisica de {{cat.age}} zile, sunt iubitor, mamos, torcacios si cel mai important element din viata ta.
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-12" *ngIf="isLoggedInAdminOwner">
+                <!-- Edit button -->
+                <a class="btn btn-info " target="__blank"
+                  (click)="onOpenModal(cat, 'edit')">Modifica</a>
+                  <!-- Delete button -->
+                <a class="btn btn-secondary " target="__blank" (click)="onOpenModal(cat, 'delete')">Sterge</a>
+                <a class="btn btn-success " target="__blank" href="p-cat-test/{{cat?.id}}">Test</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="updateCatModal" tabindex="-1" role="dialog" aria-labelledby="catEditModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateCatModalLabel">Editează {{editCat?.name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Update Form -->
+        <form #editForm="ngForm">
+          <div class="form-group">
+            <label for="name">Nume</label>
+            <input type="text" ngModel="{{editCat?.name}}" name="name" class="form-control" id="name"
+              aria-describedby="emailHelp" placeholder="Nume...">
+          </div>
+
+          <input type="hidden" ngModel="{{editCat?.id}}" name="id" class="form-control" id="id" placeholder="Email">
+          <input type="hidden" ngModel="{{editCat?.gender}}" name="gender" class="form-control" id="userCode"
+            placeholder="Gender">
+
+          <div class="form-group">
+            <label for="phone">Vârstă</label>
+            <input type="text" ngModel="{{editCat?.age}}" name="age" class="form-control" id="age" name="age"
+              placeholder="Age">
+          </div>
+          <div class="form-group">
+            <label for="phone">Poză URL</label>
+            <input type="text" ngModel="{{editCat?.imageUrl}}" name="imageUrl" class="form-control" id="imageUrl"
+              placeholder="Image URL">
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Închide</button>
+            <button (click)="onUpdateCat(editForm.value)" data-dismiss="modal" class="btn btn-primary">Salvează</button>
+          </div>
+        </form>
+        <!-- End Update Form -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteCatModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModelLabel">Șterge Pisica</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Ești sigur că vrei să ștergi pe {{deleteCat?.name}}?</p>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Nu</button>
+          <button (click)="onDeleteCat(deleteCat.id)" class="btn btn-danger" data-dismiss="modal">Da</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+      </div>
+    </div>
+
+  </div>
+
+
+<br><br><br><br>
+<br><br><br><br>
